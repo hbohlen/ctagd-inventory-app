@@ -5,6 +5,7 @@ import Layout from "@/app/layout";
 import { Button } from "@nextui-org/react";
 
 import AddItemModal from "@/components/AddItemModal";
+import AddItemForm from "@/components/AddItemForm";
 
 const Home: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
@@ -42,7 +43,9 @@ const Home: React.FC = () => {
           onAddItem={addItem}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-        />
+        >
+          <AddItemForm />
+        </AddItemModal>
         <ul>
           {items.map((item) => (
             <li key={item.id}>{item.name}</li>

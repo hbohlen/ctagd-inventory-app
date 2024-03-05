@@ -1,7 +1,7 @@
 import { useState, FormEvent } from "react";
 
 type AddItemFormProps = {
-  onAddItem: (itemName: string) => void;
+  onAddItem?: (itemName: string) => void;
 };
 
 const AddItemForm: React.FC<AddItemFormProps> = ({ onAddItem }) => {
