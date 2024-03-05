@@ -1,21 +1,14 @@
-import AddItemForm from "@/components/AddItemForm";
 import { useState, useEffect } from "react";
-import prisma from "@/lib/prisma";
+
 import { Item } from "@prisma/client";
 import Layout from "@/app/layout";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
+
+import AddItemModal from "@/components/AddItemModal";
 
 const Home: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -43,47 +36,13 @@ const Home: React.FC = () => {
   return (
     <Layout>
       <div>
-        <Button onPress={onOpen}>Open Modal</Button>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader className="flex flex-col gap-1">
-                  Modal Title
-                </ModalHeader>
-                <ModalBody>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nullam pulvinar risus non risus hendrerit venenatis.
-                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                  </p>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nullam pulvinar risus non risus hendrerit venenatis.
-                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                  </p>
-                  <p>
-                    Magna exercitation reprehenderit magna aute tempor cupidatat
-                    consequat elit dolor adipisicing. Mollit dolor eiusmod sunt
-                    ex incididunt cillum quis. Velit duis sit officia eiusmod
-                    Lorem aliqua enim laboris do dolor eiusmod. Et mollit
-                    incididunt nisi consectetur esse laborum eiusmod pariatur
-                    proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
-                  </p>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Action
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-        <AddItemForm onAddItem={addItem} />
+        <Button onPress={() => setIsModalOpen(true)}>Open Modal</Button>
+
+        <AddItemModal
+          onAddItem={addItem}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
         <ul>
           {items.map((item) => (
             <li key={item.id}>{item.name}</li>
