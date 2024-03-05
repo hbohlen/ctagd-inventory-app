@@ -2,6 +2,7 @@ import AddItemForm from "@/components/AddItemForm";
 import { useState, useEffect } from "react";
 import prisma from "@/lib/prisma";
 import { Item } from "@prisma/client";
+import Layout from "@/app/layout";
 
 const Home: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
@@ -30,14 +31,16 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div>
-      <AddItemForm onAddItem={addItem} />
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-    </div>
+    <Layout>
+      <div>
+        <AddItemForm onAddItem={addItem} />
+        <ul>
+          {items.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      </div>
+    </Layout>
   );
 };
 
