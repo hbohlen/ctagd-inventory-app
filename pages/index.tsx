@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { Item } from "@prisma/client";
 import Layout from "@/app/layout";
-import { Button } from "@nextui-org/react";
+import { Button } from "@/components/ui/button";
 
 import AddItemModal from "@/components/AddItemModal";
 import AddItemForm from "@/components/AddItemForm";
@@ -37,20 +37,7 @@ const Home: React.FC = () => {
   return (
     <Layout>
       <div>
-        <Button onPress={() => setIsModalOpen(true)}>Open Modal</Button>
-
-        <AddItemModal
-          onAddItem={addItem}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        >
-          <AddItemForm />
-        </AddItemModal>
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul>
+        <AddItemModal></AddItemModal>
       </div>
     </Layout>
   );
