@@ -12,6 +12,20 @@ const config: StorybookConfig = {
     "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
     "@storybook/addon-knobs",
+    {
+      name: "@storybook/addon-coverage",
+      options: {
+        istanbul: {
+          include: ["**/stories/**"],
+        },
+      },
+    },
+    {
+      name: "@storybook/addon-jest",
+      options: {
+        results: require("./.jest-test-results.json"),
+      },
+    },
   ],
 
   framework: {

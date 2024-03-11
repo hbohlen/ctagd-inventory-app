@@ -15,44 +15,39 @@ import { useState } from "react";
 
 import "@/styles/globals.css";
 
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-});
+import styled from "styled-components";
 
-type FormNamneInput = z.infer<typeof formSchema>;
+const StyleFormNameInput = styled.input<FormNameInputProps>`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: ${(props) => props.backgroundColor};
+  color: ${(props) =>
+    props.backgroundColor === "#ffffff" ? "#000000" : "#ffffff"};
+  &::placeholder {
+    color: ${(props) => props.placeHolderTextColor || "inherit"};
+  }
+  border-color: ${(props) => props.borderColor || "#000000"};
+`;
 
-const FormNameInput: React.FC = () => {
-  const form = useForm({
-    defaultValues: {
-      name: "",
-    },
-  });
+export interface FormNameInputProps {
+  backgroundColor: string;
+  placeHolderTextColor: string;
+  borderColor: string;
+}
 
+const FormNameInput: React.FC<FormNameInputProps> = ({
+  backgroundColor,
+  placeHolderTextColor,
+  borderColor,
+}) => {
   return (
-    <Form {...form}>
-      <FormField
-        control={form.control}
-        name="name"
-        render={({ field }) => (
-          <FormItem className="p-4 bg-black">
-            <FormLabel className="block mb-1 text-purple-500 font-bold pl-1">
-              Item Name
-            </FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Enter the name of the item."
-                {...field}
-                className="w-full px-3 py-2 bg-black text-white border border-purple-500 rounded-lg focus:border-white"
-              />
-            </FormControl>
-
-            <FormMessage className="text-red-500" />
-          </FormItem>
-        )}
-      />
-    </Form>
+    <StyleFormNameInput
+      placeholder="Enter your name"
+      backgroundColor={backgroundColor}
+      placeHolderTextColor={placeHolderTextColor}
+      borderColor={borderColor}
+    />
   );
 };
 
