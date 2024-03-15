@@ -10,7 +10,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "test:json": "jest --json --outputFile=.jest-test-results.json"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",

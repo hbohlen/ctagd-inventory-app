@@ -20,12 +20,6 @@ const config: StorybookConfig = {
         },
       },
     },
-    {
-      name: "@storybook/addon-jest",
-      options: {
-        results: require("./.jest-test-results.json"),
-      },
-    },
   ],
 
   framework: {
