@@ -1,6 +1,8 @@
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client";
+import React from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import styled from "styled-components";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,43 +13,62 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { z } from "zod";
 
 import "@/styles/globals.css";
 
-import styled from "styled-components";
+const formSchema = z.object({
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+});
 
-const StyleFormNameInput = styled.input<FormNameInputProps>`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: ${(props) => props.backgroundColor};
-  color: ${(props) =>
-    props.backgroundColor === "#ffffff" ? "#000000" : "#ffffff"};
-  &::placeholder {
-    color: ${(props) => props.placeHolderTextColor || "inherit"};
-  }
-  border-color: ${(props) => props.borderColor || "#000000"};
+export const StyledForm = styled.form`
+  background-color: ${({ backgroundColor }) => backgroundColor || "white"};
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 export interface FormNameInputProps {
   backgroundColor: string;
-  placeHolderTextColor: string;
-  borderColor: string;
 }
 
-const FormNameInput: React.FC<FormNameInputProps> = ({
-  backgroundColor,
-  placeHolderTextColor,
-  borderColor,
-}) => {
+const FormNameInput: React.FC<FormNameInputProps> = ({ backgroundColor }) => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+    },
+  });
   return (
-    <StyleFormNameInput
-      placeholder="Enter your name"
-      backgroundColor={backgroundColor}
-      placeHolderTextColor={placeHolderTextColor}
-      borderColor={borderColor}
-    />
+    <FormProvider {...form}>
+      <StyledForm
+        backgroundColor={backgroundColor}
+        onSubmit={form.handleSubmit((data) => console.log(data))}
+      >
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </StyledForm>
+    </FormProvider>
   );
 };
 
