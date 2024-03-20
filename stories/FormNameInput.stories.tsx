@@ -7,7 +7,11 @@ export default {
   title: "FormNameInput",
   component: FormNameInput,
   argTypes: {
-    backgroundColor: { control: "color" },
+    formBackgroundColor: { control: "color" },
+    nameLabelColor: { control: "color" },
+    formInputBorder: { control: "color" },
+    formInputBackgroundColor: { control: "color" },
+    formInputTextColor: { control: "color" },
   },
   args: {},
 } as Meta;
@@ -18,5 +22,9 @@ const Template: Story<FormNameInputProps> = (args) => (
 
 export const Primary = Template.bind({});
 Primary.args = {
-  backgroundColor: "red",
+  formBackgroundColor: "red",
+  nameLabelColor: "blue",
+  formInputBorder: "green",
+  formInputBackgroundColor: "yellow",
+  formInputTextColor: "purple",
 };

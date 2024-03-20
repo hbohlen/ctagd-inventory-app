@@ -26,7 +26,8 @@ const formSchema = z.object({
 });
 
 export const StyledForm = styled.form`
-  background-color: ${({ backgroundColor }) => backgroundColor || "white"};
+  background-color: ${({ formBackgroundColor }) =>
+    formBackgroundColor || "white"};
   padding: 1rem;
   border-radius: 0.5rem;
   display: flex;
@@ -34,11 +35,34 @@ export const StyledForm = styled.form`
   gap: 1rem;
 `;
 
+export const StyledFormLabel = styled.label`
+  color: ${({ nameLabelColor }) => nameLabelColor || "black"};
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+`;
+
+export const StyledFormInput = styled.input`
+  background-color: ${({ formInputBackgroundColor }) =>
+    formInputBackgroundColor || "white"};
+  color: ${({ formInputTextColor }) => formInputTextColor || "black"};
+  border: 1px solid ${({ formInputBorder }) => formInputBorder || "black"};
+`;
+
 export interface FormNameInputProps {
-  backgroundColor: string;
+  formBackgroundColor: string;
+  nameLabelColor: string;
+  formInputBorder: string;
+  formInputBackgroundColor: string;
+  formInputTextColor: string;
 }
 
-const FormNameInput: React.FC<FormNameInputProps> = ({ backgroundColor }) => {
+const FormNameInput: React.FC<FormNameInputProps> = ({
+  formBackgroundColor,
+  nameLabelColor,
+  formInputBorder,
+  formInputBackgroundColor,
+  formInputTextColor,
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,17 +72,25 @@ const FormNameInput: React.FC<FormNameInputProps> = ({ backgroundColor }) => {
   return (
     <FormProvider {...form}>
       <StyledForm
-        backgroundColor={backgroundColor}
+        formBackgroundColor={formBackgroundColor}
         onSubmit={form.handleSubmit((data) => console.log(data))}
       >
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <StyledFormLabel nameLabelColor={nameLabelColor}>
+                Item Name
+              </StyledFormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <StyledFormInput
+                  formInputBorder={formInputBorder}
+                  formInputBackgroundColor={formInputBackgroundColor}
+                  formInputTextColor={formInputTextColor}
+                  placeholder="shadcn"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 This is your public display name.
