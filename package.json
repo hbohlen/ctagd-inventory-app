@@ -39,6 +39,7 @@
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
     "@chromatic-com/storybook": "^1.2.22",
+    "@storybook/addon-actions": "^8.0.5",
     "@storybook/addon-backgrounds": "^8.0.0",
     "@storybook/addon-coverage": "^1.0.1",
     "@storybook/addon-essentials": "^8.0.0",

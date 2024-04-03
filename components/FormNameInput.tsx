@@ -48,6 +48,12 @@ export const StyledFormInput = styled.input`
   border: 1px solid ${({ formInputBorder }) => formInputBorder || "black"};
 `;
 
+export const StyledFormItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
 export interface FormNameInputProps {
   formBackgroundColor: string;
   nameLabelColor: string;
@@ -79,7 +85,7 @@ const FormNameInput: React.FC<FormNameInputProps> = ({
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem>
+            <StyledFormItem>
               <StyledFormLabel nameLabelColor={nameLabelColor}>
                 Item Name
               </StyledFormLabel>
@@ -88,15 +94,13 @@ const FormNameInput: React.FC<FormNameInputProps> = ({
                   formInputBorder={formInputBorder}
                   formInputBackgroundColor={formInputBackgroundColor}
                   formInputTextColor={formInputTextColor}
-                  placeholder="shadcn"
+                  placeholder="Item Name"
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>Item Name</FormDescription>
               <FormMessage />
-            </FormItem>
+            </StyledFormItem>
           )}
         />
       </StyledForm>
