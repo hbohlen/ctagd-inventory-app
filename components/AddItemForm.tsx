@@ -23,6 +23,9 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
+  quantity: z.string().min(1, {
+    message: "Quantity must be at least 1 character.",
+  }),
 });
 
 export const StyledForm = styled.form`
@@ -75,6 +78,7 @@ const AddItemForm: React.FC<AddItemFormProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      quantity: "",
     },
   });
   return (
@@ -97,6 +101,29 @@ const AddItemForm: React.FC<AddItemFormProps> = ({
                   formInputBackgroundColor={formInputBackgroundColor}
                   formInputTextColor={formInputTextColor}
                   placeholder="Item Name"
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </StyledFormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="quantity"
+          render={({ field }) => (
+            <StyledFormItem>
+              <StyledFormLabel nameLabelColor={nameLabelColor}>
+                Quantity
+              </StyledFormLabel>
+              <FormControl>
+                <StyledFormInput
+                  formInputBorder={formInputBorder}
+                  formInputBackgroundColor={formInputBackgroundColor}
+                  formInputTextColor={formInputTextColor}
+                  placeholder="Quantity"
                   {...field}
                 />
               </FormControl>
