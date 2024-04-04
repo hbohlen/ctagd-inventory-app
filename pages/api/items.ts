@@ -1,35 +1,28 @@
 // pages/api/items.ts
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../lib/prisma";
+import * as itemService from "../../services/itemService";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
-    // Handle GET requests
+  if (req.method === "POST") {
+    const { name, quantity } = req.body;
     try {
-      const items = await prisma.item.findMany();
-      res.status(200).json(items);
+      const newItem = await itemService.createItem(name, quantity);
+      res.status(200).json(newItem);
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch items" });
+      res.status(500).json({ error: "Failed to create item" });
     }
-  } else if (req.method === "POST") {
-    // Handle POST requests
-    const { name } = req.body;
+  } else if (req.method === "GET") {
     try {
-      const newItem = await prisma.item.create({
-        data: {
-          name,
-        },
-      });
-      res.status(201).json(newItem);
+      const allItems = await itemService.getAllItems();
+      res.status(200).json(allItems);
     } catch (error) {
-      res.status(500).json({ error: "Failed to add item" });
+      res.status(500).json({ error: "Failed to get items" });
     }
   } else {
-    res.setHeader("Allow", ["GET", "POST"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    res.status(405).json({ error: "Method not allowed" });
   }
 }
