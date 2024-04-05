@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import styled from "styled-components";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,13 +12,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import "@/styles/globals.css";
-
-import axios from "axios";
+import { createItem } from "@/services/itemService"; // Import the service function
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -27,11 +24,9 @@ const formSchema = z.object({
   }),
 });
 
-export interface AddItemFormProps {
-  onSubmit: (data: any) => void;
-}
+export interface AddItemFormProps {}
 
-const AddItemForm: React.FC<AddItemFormProps> = ({ onSubmit }) => {
+const AddItemForm: React.FC<AddItemFormProps> = ({}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,27 +34,31 @@ const AddItemForm: React.FC<AddItemFormProps> = ({ onSubmit }) => {
     },
   });
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    //console.log("Form data:", data); // Log form data
     try {
-      const response = await axios.post("/api/items", values);
-      console.log(response.data);
+      const response = await fetch("/api/items", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add item");
+      }
+      const newItem = await response.json();
+      console.log(newItem);
       // Clear the form fields
       form.reset();
     } catch (error) {
-      console.error("Failed to add item", error);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-        console.error("Response headers:", error.response.headers);
-      }
+      console.error(error);
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="name"
