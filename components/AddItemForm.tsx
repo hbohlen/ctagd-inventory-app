@@ -25,62 +25,17 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  quantity: z.string().min(1, {
-    message: "Quantity must be at least 1 character.",
-  }),
 });
 
-export const StyledForm = styled.form`
-  background-color: ${({ formBackgroundColor }) =>
-    formBackgroundColor || "white"};
-  padding: 1rem;
-  border-radius: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-export const StyledFormLabel = styled.label`
-  color: ${({ nameLabelColor }) => nameLabelColor || "black"};
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-`;
-
-export const StyledFormInput = styled.input`
-  background-color: ${({ formInputBackgroundColor }) =>
-    formInputBackgroundColor || "white"};
-  color: ${({ formInputTextColor }) => formInputTextColor || "black"};
-  border: 1px solid ${({ formInputBorder }) => formInputBorder || "black"};
-`;
-
-export const StyledFormItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
 export interface AddItemFormProps {
-  formBackgroundColor: string;
-  nameLabelColor: string;
-  formInputBorder: string;
-  formInputBackgroundColor: string;
-  formInputTextColor: string;
   onSubmit: (data: any) => void;
 }
 
-const AddItemForm: React.FC<AddItemFormProps> = ({
-  formBackgroundColor,
-  nameLabelColor,
-  formInputBorder,
-  formInputBackgroundColor,
-  formInputTextColor,
-  onSubmit,
-}) => {
+const AddItemForm: React.FC<AddItemFormProps> = ({ onSubmit }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      quantity: "",
     },
   });
 
@@ -104,26 +59,15 @@ const AddItemForm: React.FC<AddItemFormProps> = ({
 
   return (
     <Form {...form}>
-      <form
-        /*formBackgroundColor={formBackgroundColor}*/
-        onSubmit={form.handleSubmit(handleSubmit)}
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel /*nameLabelColor={nameLabelColor}*/>
-                Item Name
-              </FormLabel>
+              <FormLabel>Item Name</FormLabel>
               <FormControl>
-                <Input
-                  // /*formInputBorder={formInputBorder}*/
-                  // formInputBackgroundColor={formInputBackgroundColor}
-                  // formInputTextColor={formInputTextColor}
-                  placeholder="Item Name"
-                  {...field}
-                />
+                <Input placeholder="Item Name" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -131,28 +75,6 @@ const AddItemForm: React.FC<AddItemFormProps> = ({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="quantity"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel /*nameLabelColor={nameLabelColor}*/>
-                Quantity
-              </FormLabel>
-              <FormControl>
-                <Input
-                  // formInputBorder={formInputBorder}
-                  // formInputBackgroundColor={formInputBackgroundColor}
-                  // formInputTextColor={formInputTextColor}
-                  placeholder="Quantity"
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>

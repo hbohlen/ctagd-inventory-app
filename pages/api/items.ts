@@ -10,7 +10,7 @@ export default async function handler(
   if (req.method === "POST") {
     const { name, quantity } = req.body;
     try {
-      const newItem = await itemService.createItem(name, quantity);
+      const newItem = await itemService.createItem(name);
       res.status(200).json(newItem);
     } catch (error) {
       res.status(500).json({ error: "Failed to create item" });
