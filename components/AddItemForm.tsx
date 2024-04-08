@@ -19,63 +19,64 @@ import { z } from "zod";
 import { createItem } from "@/services/itemService"; // Import the service function
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  name: z
+    .string()
+    .nonempty()
+    .min(3, { message: "Name must be at least 3 characters long" }), // Custom error message for name
+  quantity: z
+    .number()
+    .int()
+    .positive()
+    .min(1, { message: "Quantity must be a positive integer" }), // Custom error message for quantity
 });
 
 export interface AddItemFormProps {}
+type FormValues = z.infer<typeof formSchema>;
 
 const AddItemForm: React.FC<AddItemFormProps> = ({}) => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { control, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      quantity: 0, // Set quantity default value to 0
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    try {
-      const response = await fetch("/api/items", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add item");
-      }
-      const newItem = await response.json();
-      console.log(newItem);
-      // Clear the form fields
-      form.reset();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {};
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Item Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Item Name" {...field} />
-              </FormControl>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormField
+        control={control}
+        name="name"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Item Name</FormLabel>
+            <FormControl>
+              <Input placeholder="Item Name" {...field} />
+            </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            {/* Display error message for name field */}
+          </FormItem>
+        )}
+      />
 
-        <Button type="submit">Submit</Button>
-      </form>
+      <FormField
+        control={control}
+        name="quantity"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Quantity</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder="Quantity" {...field} />
+            </FormControl>
+            <FormMessage errors={form.errors.quantity} />{" "}
+            {/* Display error message for quantity field */}
+          </FormItem>
+        )}
+      />
+
+      <Button type="submit">Submit</Button>
     </Form>
   );
 };
