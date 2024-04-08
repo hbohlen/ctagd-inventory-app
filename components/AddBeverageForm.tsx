@@ -1,6 +1,9 @@
 "use client";
-import React from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,14 +13,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormProvider,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-import { createItem } from "@/services/itemService"; // Import the service function
 
 const formSchema = z.object({
   name: z
@@ -58,7 +55,8 @@ const AddBeverageForm: React.FC<AddBeverageFormProps> = ({}) => {
                 <Input placeholder="Item Name" {...field} />
               </FormControl>
 
-              {/* Display error message for name field */}
+              <FormDescription>Descript</FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -72,8 +70,6 @@ const AddBeverageForm: React.FC<AddBeverageFormProps> = ({}) => {
               <FormControl>
                 <Input type="number" placeholder="Quantity" {...field} />
               </FormControl>
-
-              {/* Display error message for quantity field */}
             </FormItem>
           )}
         />

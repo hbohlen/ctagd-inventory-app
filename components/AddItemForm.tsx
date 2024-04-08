@@ -34,7 +34,7 @@ export interface AddItemFormProps {}
 type FormValues = z.infer<typeof formSchema>;
 
 const AddItemForm: React.FC<AddItemFormProps> = ({}) => {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -45,9 +45,10 @@ const AddItemForm: React.FC<AddItemFormProps> = ({}) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {};
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}></form>
       <FormField
-        control={control}
+        control={form.control}
         name="name"
         render={({ field }) => (
           <FormItem>
@@ -62,7 +63,7 @@ const AddItemForm: React.FC<AddItemFormProps> = ({}) => {
       />
 
       <FormField
-        control={control}
+        control={form.control}
         name="quantity"
         render={({ field }) => (
           <FormItem>
@@ -70,7 +71,7 @@ const AddItemForm: React.FC<AddItemFormProps> = ({}) => {
             <FormControl>
               <Input type="number" placeholder="Quantity" {...field} />
             </FormControl>
-            <FormMessage errors={form.errors.quantity} />{" "}
+
             {/* Display error message for quantity field */}
           </FormItem>
         )}
