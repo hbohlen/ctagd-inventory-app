@@ -13,7 +13,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Item {
-  id   Int    @id @default(autoincrement())
-  name String
+model Beverage {
+  id       Int    @id @default(autoincrement())
+  name     String
+  quantity Int
 }
