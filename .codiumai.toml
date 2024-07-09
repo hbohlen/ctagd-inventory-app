@@ -1,5 +1,0 @@
-[tests]
-framework = "Jest"
-utility_library = "Testing Library"
-use_mocks = false
-num_desired_tests = 6

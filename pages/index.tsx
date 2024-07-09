@@ -1,8 +1,7 @@
 import React from "react";
-import AddItemForm from "@/components/AddItemForm";
 
 const Home: React.FC = () => {
-  return <AddItemForm />;
+  return <h1>Hello</h1>;
 };
 
 export default Home;
