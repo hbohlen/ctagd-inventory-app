@@ -14,27 +14,53 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState } from "react";
 
 const formSchema = z.object({
-  itemName: z.string().min(2, {
+  name: z.string().min(2, {
     message: "Item name must be at least 2 characters.",
   }),
-  itemQuantity: z.number().min(1, {
+  quantity: z.number().min(1, {
     message: "Item quantity must be at least 1.",
   }),
+  vendorLink: z.string().url().optional().or(z.literal('')),
 });
 
 export function AddItemForm() {
+  const [submitted, setSubmitted] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      itemName: "",
-      itemQuantity: 1,
+      name: "",
+      quantity: 1,
+      vendorLink: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+
+    try {
+      const response = await fetch("/api/add-item", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...values,
+          vendorLink: values.vendorLink || null,
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        console.log("Item added successfully");
+      } else {
+        console.log("Failed to add item.");
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   }
 
   return (
@@ -42,7 +68,7 @@ export function AddItemForm() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="itemName"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Item Name</FormLabel>
@@ -58,20 +84,35 @@ export function AddItemForm() {
 
         <FormField
           control={form.control}
-          name="itemQuantity"
+          name="quantity"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Item Quantity</FormLabel>
               <FormControl>
-                <Input placeholder="Item Quantity" {...field} />
+                <Input placeholder="Item Quantity" {...field} type="number" />
               </FormControl>
               <FormDescription>Enter the quantity of the item</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="vendorLink"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Vendor Link</FormLabel>
+              <FormControl>
+                <Input placeholder="Vendor Link" {...field} />
+              </FormControl>
+              <FormDescription>Enter the vendor link of the item (optional)</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
       </form>
+      {submitted && <p>Item added successfully!</p>}
     </Form>
   );
 }
