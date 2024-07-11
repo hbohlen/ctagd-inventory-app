@@ -97,7 +97,7 @@ export function AddItemForm({onAddItem}: AddItemFormProps) {
             <FormItem>
               <FormLabel>Item Quantity</FormLabel>
               <FormControl>
-                <Input placeholder="Item Quantity" {...field} type="number" />
+                <Input placeholder="Item Quantity" {...field} type="number" onChange={(e) => field.onChange(parseInt(e.target.value, 10))} />
               </FormControl>
               <FormDescription>Enter the quantity of the item</FormDescription>
               <FormMessage />
