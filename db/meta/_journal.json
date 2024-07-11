@@ -8,6 +8,13 @@
       "when": 1720580930946,
       "tag": "0000_bright_umar",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1720704973217,
+      "tag": "0001_special_omega_sentinel",
+      "breakpoints": true
     }
   ]
 }

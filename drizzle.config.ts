@@ -8,6 +8,7 @@ export default defineConfig({
   dbCredentials: {
     url: "postgresql://postgres:1Sandiego3@localhost:5432/postgres" || '',
   },
+  out: "./db",
   verbose: true,
   strict: true,
 })

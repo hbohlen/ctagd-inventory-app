@@ -15,6 +15,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { Item as ItemType } from "@/types";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -26,7 +27,11 @@ const formSchema = z.object({
   vendorLink: z.string().url().optional().or(z.literal('')),
 });
 
-export function AddItemForm() {
+interface AddItemFormProps {
+  onAddItem: (item: ItemType) => void;
+}
+
+export function AddItemForm({onAddItem}: AddItemFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,6 +58,9 @@ export function AddItemForm() {
       });
 
       if (response.ok) {
+        const newItem: ItemType = await response.json();
+        onAddItem(newItem);
+
         setSubmitted(true);
         console.log("Item added successfully");
       } else {
