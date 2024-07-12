@@ -1,13 +1,16 @@
-import type { ReactNode } from "react";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) {
+
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <div>
+      
+      <main>{children}</main>
+    </div>
   );
-}
+};
+
+export default Layout;
