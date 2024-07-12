@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { AddItemForm } from "@/components/AddItemForm";
 import { Item } from "@/components/Item";
 import { Item as ItemType } from "@/types"; // Ensure the path is correct
+import { FormModal } from "@/components/FormModal";
 
 const mockItem: ItemType = {
   id: 1,
   name: "Test Item",
   quantity: 10,
-  vendorLink: "https://www.amazon.com"
+  vendorLink: "https://www.amazon.com",
 };
 
 const Home: React.FC = () => {
@@ -26,8 +27,7 @@ const Home: React.FC = () => {
         }
       } catch (error) {
         console.error("Error fetching items:", error);
-      }
-      finally {
+      } finally {
         setLoading(false);
       }
     }
@@ -37,11 +37,12 @@ const Home: React.FC = () => {
 
   const addItemToList = (newItem: ItemType) => {
     setItems((prevItems) => [...prevItems, newItem]);
-  }
+  };
 
   return (
     <>
-      <AddItemForm onAddItem={addItemToList} />
+      <FormModal onAddItem={addItemToList} />
+
       {!loading && items.length === 0 && <p>No items found</p>}
       {loading && <p>Loading...</p>}
       <div>
