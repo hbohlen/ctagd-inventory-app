@@ -14,10 +14,16 @@ const mockItem: ItemType = {
 const Home: React.FC = () => {
   const [items, setItems] = useState<ItemType[]>([]); // Explicitly define the type
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     async function fetchItems() {
       try {
-        const response = await fetch("/api/get-items");
+        const response = await fetch("/api/items/get-items");
         if (response.ok) {
           const data: ItemType[] = await response.json(); // Explicitly define the type
           console.log("Fetched items:", data);
@@ -39,16 +45,21 @@ const Home: React.FC = () => {
     setItems((prevItems) => [...prevItems, newItem]);
   };
 
+  const updateItemInList = (updatedItem: ItemType) => {
+    setItems((prevItems) =>
+      prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+    );
+  };
+
   return (
     <>
-      <FormModal onAddItem={addItemToList} />
+      {mounted && <FormModal onAddItem={addItemToList} />}
 
       {!loading && items.length === 0 && <p>No items found</p>}
       {loading && <p>Loading...</p>}
       <div>
         {items.map((item) => (
-          <Item key={item.id} item={item} />
-        
+          <Item key={item.id} item={item} onItemEdit={updateItemInList} />
         ))}
       </div>
     </>
