@@ -3,6 +3,8 @@ import { AddItemForm } from "@/components/AddItemForm";
 import { Item } from "@/components/Item";
 import { Item as ItemType } from "@/types"; // Ensure the path is correct
 import { FormModal } from "@/components/FormModal";
+import { NavMenu } from "@/components/NavMenu";
+import Layout from "@/app/layout";
 
 const mockItem: ItemType = {
   id: 1,
@@ -52,17 +54,19 @@ const Home: React.FC = () => {
   };
 
   return (
-    <>
+    <Layout>
+      
+
       {mounted && <FormModal onAddItem={addItemToList} />}
 
       {!loading && items.length === 0 && <p>No items found</p>}
       {loading && <p>Loading...</p>}
-      <div>
+      <div className="flex flex-wrap gap-4">
         {items.map((item) => (
           <Item key={item.id} item={item} onItemEdit={updateItemInList} />
         ))}
       </div>
-    </>
+    </Layout>
   );
 };
 

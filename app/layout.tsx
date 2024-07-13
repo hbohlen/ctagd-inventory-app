@@ -1,4 +1,5 @@
-
+import React from "react";
+import { NavMenu } from "@/components/NavMenu";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -6,8 +7,8 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div>
-      
+    <div className="flex">
+      <NavMenu />
       <main>{children}</main>
     </div>
   );
