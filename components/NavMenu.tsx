@@ -19,17 +19,17 @@ import {
             {/* Navigation List */}
             <NavigationMenuItem>
               <Link href="/" passHref>
-                <NavigationMenuLink className="block px-4 py-2 hover:bg-gray-700">Home</NavigationMenuLink>
+                <NavigationMenuLink asChild className="block px-4 py-2 hover:bg-gray-700">Home</NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href="/about" passHref>
-                <NavigationMenuLink className="block px-4 py-2 hover:bg-gray-700">About</NavigationMenuLink>
+                <NavigationMenuLink asChild className="block px-4 py-2 hover:bg-gray-700">About</NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href="/contact" passHref>
-                <NavigationMenuLink className="block px-4 py-2 hover:bg-gray-700">Contact</NavigationMenuLink>
+                <NavigationMenuLink asChild className="block px-4 py-2 hover:bg-gray-700">Contact</NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             {/* Add more items as needed */}

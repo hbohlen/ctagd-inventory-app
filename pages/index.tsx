@@ -5,6 +5,11 @@ import { Item as ItemType } from "@/types"; // Ensure the path is correct
 import { FormModal } from "@/components/FormModal";
 import { NavMenu } from "@/components/NavMenu";
 import Layout from "@/app/layout";
+import { Theme } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
+import { ItemForm } from "@/components/ItemForm";
+import "@radix-ui/themes/styles.css";
+import "@/styles/globals.css";
 
 const mockItem: ItemType = {
   id: 1,
@@ -54,19 +59,9 @@ const Home: React.FC = () => {
   };
 
   return (
-    <Layout>
-      
-
-      {mounted && <FormModal onAddItem={addItemToList} />}
-
-      {!loading && items.length === 0 && <p>No items found</p>}
-      {loading && <p>Loading...</p>}
-      <div className="flex flex-wrap gap-4">
-        {items.map((item) => (
-          <Item key={item.id} item={item} onItemEdit={updateItemInList} />
-        ))}
-      </div>
-    </Layout>
+    <div className="container">
+      <ItemForm />
+    </div>
   );
 };
 

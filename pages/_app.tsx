@@ -1,10 +1,19 @@
 import { AppProps } from "next/app";
 
 import React from "react";
-import "@/styles/globals.css";
+import '@radix-ui/themes/styles.css';
+import '@/styles/globals.css';
+import { Theme } from '@radix-ui/themes';
+
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <Theme>
+      <Component {...pageProps} />
+
+    </Theme>
+    
+  );
 }
 
 export default MyApp;

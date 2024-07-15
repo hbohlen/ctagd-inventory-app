@@ -8,9 +8,9 @@ type LayoutProps = {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex">
-      <NavMenu />
+      
       <main>{children}</main>
-    </div>
+    </div>                  
   );
 };
 
