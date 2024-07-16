@@ -1,8 +1,12 @@
+"use client";
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import * as Form from "@radix-ui/react-form";
+import { useState } from "react";
+import { Item as ItemType } from "@/types";
 
 // Define the form schema using zod
 const formSchema = z.object({
@@ -15,7 +19,13 @@ const formSchema = z.object({
   vendorLink: z.string().url().optional().or(z.literal('')),
 });
 
-export function ItemForm() {
+
+interface ItemFormProps {
+  onAddItem: (item: ItemType) => void;
+}
+
+export function ItemForm( {onAddItem }: ItemFormProps ) {
+  const [submitted, setSubmitted] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -25,8 +35,33 @@ export function ItemForm() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  async function onSubmit(values: z.infer<typeof formSchema>){
     console.log(values);
+
+    try {
+      const response = await fetch("/api/items/add-item", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...values,
+          vendorLink: values.vendorLink || null,
+        }),
+      });
+
+      if (response.ok) {
+        const newItem: ItemType = await response.json();
+        onAddItem(newItem);
+
+        setSubmitted(true);
+        console.log("Item added successfully");
+      } else {
+        console.log("Failed to add item.");
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   };
 
   return (

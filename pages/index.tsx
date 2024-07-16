@@ -60,7 +60,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="container">
-      <ItemForm />
+      <ItemForm onAddItem={addItemToList} />
     </div>
   );
 };
