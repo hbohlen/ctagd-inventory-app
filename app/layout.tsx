@@ -1,5 +1,6 @@
 import React from "react";
-import { NavMenu } from "@/components/NavMenu";
+import { SideNav } from "@/components/SideNav";
+import { Header } from "@/components/Header";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -7,10 +8,13 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex">
-      
-      <main>{children}</main>
-    </div>                  
+    <div className="flex flex-col h-full">
+      <Header />
+      <div className="flex flex-grow">
+        <SideNav />
+        <main className="ml-32 p-8 flex-grow">{children}</main>
+      </div>
+    </div>
   );
 };
 

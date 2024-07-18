@@ -1,25 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { AddItemForm } from "@/components/AddItemForm";
-import { Item } from "@/components/Item";
-import { Item as ItemType } from "@/types"; // Ensure the path is correct
-import { FormModal } from "@/components/FormModal";
-import { NavMenu } from "@/components/NavMenu";
-import Layout from "@/app/layout";
-import { Theme } from "@radix-ui/themes";
-import { Button } from "@radix-ui/themes";
+import { Item as ItemType } from "@/types";
+import Layout from "@/app/Layout";
 import { ItemForm } from "@/components/ItemForm";
-import "@radix-ui/themes/styles.css";
 import "@/styles/globals.css";
 
-const mockItem: ItemType = {
-  id: 1,
-  name: "Test Item",
-  quantity: 10,
-  vendorLink: "https://www.amazon.com",
-};
-
 const Home: React.FC = () => {
-  const [items, setItems] = useState<ItemType[]>([]); // Explicitly define the type
+  const [items, setItems] = useState<ItemType[]>([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
@@ -32,9 +18,9 @@ const Home: React.FC = () => {
       try {
         const response = await fetch("/api/items/get-items");
         if (response.ok) {
-          const data: ItemType[] = await response.json(); // Explicitly define the type
+          const data: ItemType[] = await response.json();
           console.log("Fetched items:", data);
-          setItems(data); // Ensure items are set after initial render
+          setItems(data);
         } else {
           console.error("Failed to fetch items");
         }
@@ -59,9 +45,24 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <Layout>
       <ItemForm onAddItem={addItemToList} />
-    </div>
+      {!loading && items.length === 0 && <p>No items found</p>}
+      {loading && <p>Loading...</p>}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {items.map((item) => (
+          <div key={item.id} className="p-4 border rounded">
+            <h2 className="text-xl font-bold">{item.name}</h2>
+            <p>Quantity: {item.quantity}</p>
+            {item.vendorLink && (
+              <p>
+                Vendor: <a href={item.vendorLink} className="text-blue-500" target="_blank" rel="noopener noreferrer">Link</a>
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+    </Layout>
   );
 };
 
