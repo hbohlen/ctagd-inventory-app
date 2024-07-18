@@ -14,60 +14,58 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
 import { Item as ItemType } from "@/types";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Item name must be at least 2 characters.",
   }),
-  quantity: z.number().min(1, {
-    message: "Item quantity must be at least 1.",
-  }),
+  quantity: z
+    .number()
+    .min(1, {
+      message: "Item quantity must be at least 1.",
+    })
+    .refine((value) => !isNaN(value), {
+      message: "Quantity must be a number",
+    }),
   vendorLink: z.string().url().optional().or(z.literal('')),
 });
 
-interface AddItemFormProps {
-  onAddItem: (item: ItemType) => void;
+interface EditItemFormProps {
+  item: ItemType;
+  onItemEdit: (item: ItemType) => void;
 }
 
-export function AddItemForm({onAddItem}: AddItemFormProps) {
-  const [submitted, setSubmitted] = useState(false);
+export function EditItemForm({ item, onItemEdit }: EditItemFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      quantity: 1,
-      vendorLink: "",
+      name: item.name,
+      quantity: item.quantity,
+      vendorLink: item.vendorLink || "",
     },
+    mode: "onChange",
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-
     try {
-      const response = await fetch("/api/items/add-item", {
-        method: "POST",
+      const response = await fetch(`/api/items/${item.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...values,
-          vendorLink: values.vendorLink || null,
-        }),
+        body: JSON.stringify(values),
       });
 
       if (response.ok) {
-        const newItem: ItemType = await response.json();
-        onAddItem(newItem);
-
-        setSubmitted(true);
-        console.log("Item added successfully");
+        const updatedItem: ItemType = await response.json();
+        onItemEdit(updatedItem);
+        console.log("Item updated successfully");
       } else {
-        console.log("Failed to add item.");
+        console.log("Failed to update item.");
       }
     } catch (error) {
-      console.error("Error adding item:", error);
+      console.error("Error updating item:", error);
     }
   }
 
@@ -83,7 +81,6 @@ export function AddItemForm({onAddItem}: AddItemFormProps) {
               <FormControl>
                 <Input placeholder="Item Name" {...field} />
               </FormControl>
-
               <FormDescription>Enter the name of the item</FormDescription>
               <FormMessage />
             </FormItem>
@@ -97,13 +94,19 @@ export function AddItemForm({onAddItem}: AddItemFormProps) {
             <FormItem>
               <FormLabel>Item Quantity</FormLabel>
               <FormControl>
-                <Input placeholder="Item Quantity" {...field} type="number" onChange={(e) => field.onChange(parseInt(e.target.value, 10))} />
+                <Input
+                  placeholder="Item Quantity"
+                  {...field}
+                  type="number"
+                  onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+                />
               </FormControl>
               <FormDescription>Enter the quantity of the item</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="vendorLink"
@@ -120,7 +123,6 @@ export function AddItemForm({onAddItem}: AddItemFormProps) {
         />
         <Button type="submit">Submit</Button>
       </form>
-      {submitted && <p>Item added successfully!</p>}
     </Form>
   );
 }

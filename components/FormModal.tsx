@@ -22,7 +22,7 @@ interface FormModalProps {
 export function FormModal({ onAddItem }: FormModalProps) {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>Add Item</Button>
       </DialogTrigger>
       <DialogContent>
