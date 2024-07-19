@@ -1,32 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Item as ItemType } from "@/types"; // Adjust the import path if necessary
+import { Item as ItemType } from "@/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { EditItemForm } from "./EditItemForm";
+import Link from "next/link";
 
 interface ItemProps {
   item: ItemType;
+  onItemEdit: (item: ItemType) => void;
 }
 
-export function Item({ item }: ItemProps) {
+export function Item({ item, onItemEdit }: ItemProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{item.name}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p>Item Quantity: {item.quantity}</p>
-      </CardContent>
-      {item.vendorLink && item.vendorLink !== "" && (
+    <>
+      <Card
+        onClick={() => setIsOpen(true)}
+        className="flex-1 min-w-[250px] max-w-[300px]"
+      >
+        <CardHeader>
+          <CardTitle>{item.name}</CardTitle>
+        </CardHeader>
         <CardContent>
-          <p>
-            Item Vendor Link:{" "}
-            <a href={item.vendorLink} target="_blank" rel="noopener noreferrer">
-              {item.vendorLink}
-            </a>
-          </p>
+          <p>Item Quantity: {item.quantity}</p>
         </CardContent>
-      )}
-      <Button>Restock History</Button>
-    </Card>
+        {item.vendorLink && item.vendorLink !== "" && (
+          <CardContent>
+            <p>
+              Item Vendor Link:{" "}
+              <Link href={item.vendorLink} legacyBehavior passHref>
+                {item.vendorLink}
+              </Link>
+            </p>
+          </CardContent>
+        )}
+      </Card>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Item</DialogTitle>
+          </DialogHeader>
+          <EditItemForm item={item} onItemEdit={onItemEdit} />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

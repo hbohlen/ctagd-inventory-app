@@ -1,57 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { AddItemForm } from "@/components/AddItemForm";
-import { Item } from "@/components/Item";
-import { Item as ItemType } from "@/types"; // Ensure the path is correct
-import { FormModal } from "@/components/FormModal";
-
-const mockItem: ItemType = {
-  id: 1,
-  name: "Test Item",
-  quantity: 10,
-  vendorLink: "https://www.amazon.com",
-};
+import { Item as ItemType } from "@/types";
+import Layout from "@/app/layout"; // Ensure the correct path
+import ItemList from "@/components/ItemList"; // Ensure the correct path
+import ItemDialog from "@/components/FormModal"; // Ensure the correct path
+import { fetchItems } from "@/services/itemService"; // Ensure the correct path
+import "@/styles/globals.css";
 
 const Home: React.FC = () => {
-  const [items, setItems] = useState<ItemType[]>([]); // Explicitly define the type
+  const [items, setItems] = useState<ItemType[]>([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    async function fetchItems() {
-      try {
-        const response = await fetch("/api/get-items");
-        if (response.ok) {
-          const data: ItemType[] = await response.json(); // Explicitly define the type
-          console.log("Fetched items:", data);
-          setItems(data); // Ensure items are set after initial render
-        } else {
-          console.error("Failed to fetch items");
-        }
-      } catch (error) {
-        console.error("Error fetching items:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
+  const [mounted, setMounted] = useState(false);
 
-    fetchItems();
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
-  const addItemToList = (newItem: ItemType) => {
-    setItems((prevItems) => [...prevItems, newItem]);
-  };
+  useEffect(() => {
+    async function getItems() {
+      const data = await fetchItems();
+      setItems(data);
+      setLoading(false);
+    }
+
+    getItems();
+  }, []);
 
   return (
-    <>
-      <FormModal onAddItem={addItemToList} />
-
+    <Layout>
+      <ItemDialog />
       {!loading && items.length === 0 && <p>No items found</p>}
       {loading && <p>Loading...</p>}
-      <div>
-        {items.map((item) => (
-          <Item key={item.id} item={item} />
-        
-        ))}
-      </div>
-    </>
+      <ItemList items={items} />
+    </Layout>
   );
 };
 

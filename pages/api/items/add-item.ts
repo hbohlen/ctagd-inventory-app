@@ -1,6 +1,6 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import db from "../../db";
+import db from "../../../db";
 import { inventoryItems } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
