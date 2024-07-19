@@ -2,65 +2,28 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import * as Form from "@radix-ui/react-form";
-import { useState } from "react";
-import { Item as ItemType } from "@/types";
-
-// Define the form schema using zod
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Item name must be at least 2 characters.",
-  }),
-  quantity: z.number().min(1, {
-    message: "Item quantity must be at least 1.",
-  }),
-  vendorLink: z.string().url().optional().or(z.literal('')),
-});
-
+import { formSchema, formResolver } from "@/zod/schema";
+import { z } from "zod"; // Import z from zod
+import { addItem } from "@/services/itemService";
+import { useRouter } from "next/router";
 
 interface ItemFormProps {
-  onAddItem: (item: ItemType) => void;
+  onSubmitSuccess?: () => void;
 }
 
-export function ItemForm( {onAddItem }: ItemFormProps ) {
-  const [submitted, setSubmitted] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      quantity: 1,
-      vendorLink: "",
-    },
-  });
+export function ItemForm({ onSubmitSuccess }: ItemFormProps) {
+  const router = useRouter();
+  const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>(formResolver);
 
-  async function onSubmit(values: z.infer<typeof formSchema>){
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-
-    try {
-      const response = await fetch("/api/items/add-item", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...values,
-          vendorLink: values.vendorLink || null,
-        }),
-      });
-
-      if (response.ok) {
-        const newItem: ItemType = await response.json();
-        onAddItem(newItem);
-
-        setSubmitted(true);
-        console.log("Item added successfully");
-      } else {
-        console.log("Failed to add item.");
+    const newItem = await addItem(values);
+    if (newItem) {
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
       }
-    } catch (error) {
-      console.error("Error adding item:", error);
+      router.reload();
     }
   };
 
@@ -97,7 +60,7 @@ export function ItemForm( {onAddItem }: ItemFormProps ) {
       </Form.Field>
 
       <Form.Submit asChild>
-      <button className="box-border w-full text-violet11 shadow-blackA4 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]">Submit</button>
+        <button className="box-border w-full text-violet11 shadow-blackA4 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]">Submit</button>
       </Form.Submit>
     </Form.Root>
   );

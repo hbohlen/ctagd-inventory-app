@@ -1,36 +1,32 @@
 import React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { ItemForm } from "./ItemForm";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import { Button } from "@/components/ui/button";
-
-import { Item as ItemType } from "@/types";
-
-import { AddItemForm } from "./AddItemForm";
-
-interface FormModalProps {
-  onAddItem: (item: ItemType) => void;
-}
-
-export function FormModal({ onAddItem }: FormModalProps) {
+const FormModal: React.FC = () => {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>Add Item</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add Item</DialogTitle>
-        </DialogHeader>
-        <AddItemForm onAddItem={onAddItem} />
-      </DialogContent>
-    </Dialog>
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded">
+          Add Item
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+        <Dialog.Content className="fixed top-[50%] left-[50%] max-w-md w-full p-6 bg-white rounded-lg transform -translate-x-[50%] -translate-y-[50%]">
+          <Dialog.Title className="text-lg font-bold">Add Item</Dialog.Title>
+          <Dialog.Description className="mb-4">
+            Fill out the form below to add a new item.
+          </Dialog.Description>
+          <ItemForm />
+          <Dialog.Close asChild>
+            <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded">
+              Close
+            </button>
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
-}
+};
+
+export default FormModal;
