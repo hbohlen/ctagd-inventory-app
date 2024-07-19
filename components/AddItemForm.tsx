@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { Item as ItemType } from "@/types";
+import { addItem } from "@/services/itemService";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -24,14 +25,14 @@ const formSchema = z.object({
   quantity: z.number().min(1, {
     message: "Item quantity must be at least 1.",
   }),
-  vendorLink: z.string().url().optional().or(z.literal('')),
+  vendorLink: z.string().url().optional().or(z.literal("")),
 });
 
 interface AddItemFormProps {
   onAddItem: (item: ItemType) => void;
 }
 
-export function AddItemForm({onAddItem}: AddItemFormProps) {
+export function AddItemForm({ onAddItem }: AddItemFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,30 +46,7 @@ export function AddItemForm({onAddItem}: AddItemFormProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
 
-    try {
-      const response = await fetch("/api/items/add-item", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...values,
-          vendorLink: values.vendorLink || null,
-        }),
-      });
-
-      if (response.ok) {
-        const newItem: ItemType = await response.json();
-        onAddItem(newItem);
-
-        setSubmitted(true);
-        console.log("Item added successfully");
-      } else {
-        console.log("Failed to add item.");
-      }
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    addItem(values);
   }
 
   return (
@@ -97,7 +75,12 @@ export function AddItemForm({onAddItem}: AddItemFormProps) {
             <FormItem>
               <FormLabel>Item Quantity</FormLabel>
               <FormControl>
-                <Input placeholder="Item Quantity" {...field} type="number" onChange={(e) => field.onChange(parseInt(e.target.value, 10))} />
+                <Input
+                  placeholder="Item Quantity"
+                  {...field}
+                  type="number"
+                  onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+                />
               </FormControl>
               <FormDescription>Enter the quantity of the item</FormDescription>
               <FormMessage />
@@ -113,7 +96,9 @@ export function AddItemForm({onAddItem}: AddItemFormProps) {
               <FormControl>
                 <Input placeholder="Vendor Link" {...field} />
               </FormControl>
-              <FormDescription>Enter the vendor link of the item (optional)</FormDescription>
+              <FormDescription>
+                Enter the vendor link of the item (optional)
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

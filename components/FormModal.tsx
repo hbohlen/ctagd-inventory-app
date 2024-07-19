@@ -1,12 +1,13 @@
 import React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import { Item as ItemType } from "@/types";
 import { ItemForm } from "./ItemForm";
 
-interface ItemDialogProps {
+interface FormModalProps {
   onAddItem: (item: ItemType) => void;
 }
 
-const ItemDialog: React.FC<ItemDialogProps> = ({ onAddItem }) => {
+const FormModal: React.FC<FormModalProps> = ({ onAddItem }) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -33,4 +34,4 @@ const ItemDialog: React.FC<ItemDialogProps> = ({ onAddItem }) => {
   );
 };
 
-export default ItemDialog;
+export default FormModal;

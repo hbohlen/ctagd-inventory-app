@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Item as ItemType } from "@/types";
-import Layout from "@/app/Layout";
+import Layout from "@/app/layout";
 import { ItemForm } from "@/components/ItemForm";
 import { fetchItems } from "@/services/itemService";
 import ItemList from "@/components/ItemList";
+import FormModal from "@/components/FormModal"
 import "@/styles/globals.css";
 
 const Home: React.FC = () => {
@@ -37,7 +38,7 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <ItemForm onAddItem={addItemToList} />
+      <FormModal onAddItem={addItemToList} />
       {!loading && items.length === 0 && <p>No items found</p>}
       {loading && <p>Loading...</p>}
       <ItemList items={items} />
