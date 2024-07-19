@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Item as ItemType } from "@/types";
-import Layout from "@/app/layout";
-import { ItemForm } from "@/components/ItemForm";
-import { fetchItems } from "@/services/itemService";
-import ItemList from "@/components/ItemList";
-import FormModal from "@/components/FormModal"
+import Layout from "@/app/layout"; // Ensure the correct path
+import ItemList from "@/components/ItemList"; // Ensure the correct path
+import ItemDialog from "@/components/FormModal"; // Ensure the correct path
+import { fetchItems } from "@/services/itemService"; // Ensure the correct path
 import "@/styles/globals.css";
 
 const Home: React.FC = () => {
@@ -26,19 +25,9 @@ const Home: React.FC = () => {
     getItems();
   }, []);
 
-  const addItemToList = (newItem: ItemType) => {
-    setItems((prevItems) => [...prevItems, newItem]);
-  };
-
-  const updateItemInList = (updatedItem: ItemType) => {
-    setItems((prevItems) =>
-      prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
-    );
-  };
-
   return (
     <Layout>
-      <FormModal  />
+      <ItemDialog />
       {!loading && items.length === 0 && <p>No items found</p>}
       {loading && <p>Loading...</p>}
       <ItemList items={items} />

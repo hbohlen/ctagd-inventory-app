@@ -2,30 +2,29 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import * as Form from "@radix-ui/react-form";
-import { useState } from "react";
-import { Item as ItemType } from "@/types";
-import { addItem } from "@/services/itemService";
 import { formSchema, formResolver } from "@/zod/schema";
-
-
-
+import { z } from "zod"; // Import z from zod
+import { addItem } from "@/services/itemService";
+import { useRouter } from "next/router";
 
 interface ItemFormProps {
-  
+  onSubmitSuccess?: () => void;
 }
 
-export function ItemForm( ) {
-  const [submitted, setSubmitted] = useState(false);
+export function ItemForm({ onSubmitSuccess }: ItemFormProps) {
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>(formResolver);
-    
 
-  async function onSubmit(values: z.infer<typeof formSchema>){
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    addItem(values);
-   
+    const newItem = await addItem(values);
+    if (newItem) {
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
+      }
+      router.reload();
+    }
   };
 
   return (
@@ -61,7 +60,7 @@ export function ItemForm( ) {
       </Form.Field>
 
       <Form.Submit asChild>
-      <button className="box-border w-full text-violet11 shadow-blackA4 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]">Submit</button>
+        <button className="box-border w-full text-violet11 shadow-blackA4 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]">Submit</button>
       </Form.Submit>
     </Form.Root>
   );

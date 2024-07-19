@@ -1,13 +1,8 @@
 import React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Item as ItemType } from "@/types";
 import { ItemForm } from "./ItemForm";
 
-interface FormModalProps {
-  
-}
-
-const FormModal: React.FC<FormModalProps> = () => {
+const FormModal: React.FC = () => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
