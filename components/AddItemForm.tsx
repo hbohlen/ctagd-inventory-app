@@ -17,16 +17,9 @@ import { z } from "zod";
 import { useState } from "react";
 import { Item as ItemType } from "@/types";
 import { addItem } from "@/services/itemService";
+import { formSchema, formResolver } from "@/zod/schema";
 
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Item name must be at least 2 characters.",
-  }),
-  quantity: z.number().min(1, {
-    message: "Item quantity must be at least 1.",
-  }),
-  vendorLink: z.string().url().optional().or(z.literal("")),
-});
+g
 
 interface AddItemFormProps {
   onAddItem: (item: ItemType) => void;
@@ -34,14 +27,7 @@ interface AddItemFormProps {
 
 export function AddItemForm({ onAddItem }: AddItemFormProps) {
   const [submitted, setSubmitted] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      quantity: 1,
-      vendorLink: "",
-    },
-  });
+  const form = useForm<z.infer<typeof formSchema>>(formResolver);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);

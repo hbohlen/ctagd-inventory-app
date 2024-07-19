@@ -38,7 +38,7 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <FormModal onAddItem={addItemToList} />
+      <FormModal  />
       {!loading && items.length === 0 && <p>No items found</p>}
       {loading && <p>Loading...</p>}
       <ItemList items={items} />

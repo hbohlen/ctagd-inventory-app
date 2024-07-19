@@ -4,10 +4,10 @@ import { Item as ItemType } from "@/types";
 import { ItemForm } from "./ItemForm";
 
 interface FormModalProps {
-  onAddItem: (item: ItemType) => void;
+  
 }
 
-const FormModal: React.FC<FormModalProps> = ({ onAddItem }) => {
+const FormModal: React.FC<FormModalProps> = () => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -22,7 +22,7 @@ const FormModal: React.FC<FormModalProps> = ({ onAddItem }) => {
           <Dialog.Description className="mb-4">
             Fill out the form below to add a new item.
           </Dialog.Description>
-          <ItemForm onAddItem={onAddItem} />
+          <ItemForm />
           <Dialog.Close asChild>
             <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded">
               Close

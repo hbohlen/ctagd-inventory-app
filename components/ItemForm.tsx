@@ -7,61 +7,25 @@ import { z } from "zod";
 import * as Form from "@radix-ui/react-form";
 import { useState } from "react";
 import { Item as ItemType } from "@/types";
+import { addItem } from "@/services/itemService";
+import { formSchema, formResolver } from "@/zod/schema";
 
-// Define the form schema using zod
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Item name must be at least 2 characters.",
-  }),
-  quantity: z.number().min(1, {
-    message: "Item quantity must be at least 1.",
-  }),
-  vendorLink: z.string().url().optional().or(z.literal('')),
-});
+
 
 
 interface ItemFormProps {
-  onAddItem: (item: ItemType) => void;
+  
 }
 
-export function ItemForm( {onAddItem }: ItemFormProps ) {
+export function ItemForm( ) {
   const [submitted, setSubmitted] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      quantity: 1,
-      vendorLink: "",
-    },
-  });
+  const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>(formResolver);
+    
 
   async function onSubmit(values: z.infer<typeof formSchema>){
     console.log(values);
-
-    try {
-      const response = await fetch("/api/items/add-item", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...values,
-          vendorLink: values.vendorLink || null,
-        }),
-      });
-
-      if (response.ok) {
-        const newItem: ItemType = await response.json();
-        onAddItem(newItem);
-
-        setSubmitted(true);
-        console.log("Item added successfully");
-      } else {
-        console.log("Failed to add item.");
-      }
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    addItem(values);
+   
   };
 
   return (
