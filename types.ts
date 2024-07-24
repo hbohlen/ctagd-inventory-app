@@ -4,3 +4,4 @@ export interface Item {
     quantity: number;
     vendorLink?: string;
 }
+

@@ -6,7 +6,7 @@ import * as Form from "@radix-ui/react-form";
 import { formSchema, formResolver } from "@/zod/schema";
 import { z } from "zod"; // Import z from zod
 import { addItem } from "@/services/itemService";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface ItemFormProps {
   onSubmitSuccess?: () => void;
@@ -23,7 +23,7 @@ export function ItemForm({ onSubmitSuccess }: ItemFormProps) {
       if (onSubmitSuccess) {
         onSubmitSuccess();
       }
-      router.reload();
+      router.refresh();
     }
   };
 
