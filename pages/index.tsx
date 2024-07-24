@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Item as ItemType } from "@/types";
-import Layout from "@/app/layout"; // Ensure the correct path
-import ItemList from "@/components/ItemList"; // Ensure the correct path
-import ItemDialog from "@/components/FormModal"; // Ensure the correct path
-import { fetchItems } from "@/services/itemService"; // Ensure the correct path
-import "@/styles/globals.css";
+import React, { useEffect, useState } from 'react';
+import { Item as ItemType } from '@/types';
+import Layout from '@/app/layout'; // Ensure the correct path
+import ItemList from '@/components/ItemList'; // Ensure the correct path
+import ItemDialog from '@/components/FormModal'; // Ensure the correct path
+import { fetchItems } from '@/services/itemService'; // Ensure the correct path
+import '@/styles/globals.css';
 
 const Home: React.FC = () => {
   const [items, setItems] = useState<ItemType[]>([]);

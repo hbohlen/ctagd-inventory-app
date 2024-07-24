@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useForm } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -10,25 +10,25 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Item as ItemType } from "@/types";
+  FormMessage
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Item as ItemType } from '@/types';
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Item name must be at least 2 characters.",
+    message: 'Item name must be at least 2 characters.'
   }),
   quantity: z
     .number()
     .min(1, {
-      message: "Item quantity must be at least 1.",
+      message: 'Item quantity must be at least 1.'
     })
     .refine((value) => !isNaN(value), {
-      message: "Quantity must be a number",
+      message: 'Quantity must be a number'
     }),
-  vendorLink: z.string().url().optional().or(z.literal('')),
+  vendorLink: z.string().url().optional().or(z.literal(''))
 });
 
 interface EditItemFormProps {
@@ -42,30 +42,30 @@ export function EditItemForm({ item, onItemEdit }: EditItemFormProps) {
     defaultValues: {
       name: item.name,
       quantity: item.quantity,
-      vendorLink: item.vendorLink || "",
+      vendorLink: item.vendorLink || ''
     },
-    mode: "onChange",
+    mode: 'onChange'
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await fetch(`/api/items/${item.id}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(values)
       });
 
       if (response.ok) {
         const updatedItem: ItemType = await response.json();
         onItemEdit(updatedItem);
-        console.log("Item updated successfully");
+        console.log('Item updated successfully');
       } else {
-        console.log("Failed to update item.");
+        console.log('Failed to update item.');
       }
     } catch (error) {
-      console.error("Error updating item:", error);
+      console.error('Error updating item:', error);
     }
   }
 
@@ -116,7 +116,9 @@ export function EditItemForm({ item, onItemEdit }: EditItemFormProps) {
               <FormControl>
                 <Input placeholder="Vendor Link" {...field} />
               </FormControl>
-              <FormDescription>Enter the vendor link of the item (optional)</FormDescription>
+              <FormDescription>
+                Enter the vendor link of the item (optional)
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

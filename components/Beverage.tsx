@@ -1,6 +1,6 @@
-import React from "react";
-import { Beverage as BeverageType } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from 'react';
+import { Beverage as BeverageType } from '@/types';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface BeverageProps {
   beverage: BeverageType;

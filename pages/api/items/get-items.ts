@@ -2,7 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import db from '@/db';
 import { inventoryItems } from '@/db/schema';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === 'GET') {
     try {
       console.log('Fetching items from database');

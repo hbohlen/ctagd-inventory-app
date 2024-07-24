@@ -1,6 +1,6 @@
-import React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-import { ItemForm } from "./ItemForm";
+import React from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { ItemForm } from './ItemForm';
 
 const FormModal: React.FC = () => {
   return (

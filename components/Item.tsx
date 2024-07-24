@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Item as ItemType } from "@/types";
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Item as ItemType } from '@/types';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { EditItemForm } from "./EditItemForm";
-import Link from "next/link";
+  DialogTitle
+} from '@/components/ui/dialog';
+import { EditItemForm } from './EditItemForm';
+import Link from 'next/link';
 
 interface ItemProps {
   item: ItemType;
@@ -30,10 +30,10 @@ export function Item({ item, onItemEdit }: ItemProps) {
         <CardContent>
           <p>Item Quantity: {item.quantity}</p>
         </CardContent>
-        {item.vendorLink && item.vendorLink !== "" && (
+        {item.vendorLink && item.vendorLink !== '' && (
           <CardContent>
             <p>
-              Item Vendor Link:{" "}
+              Item Vendor Link:{' '}
               <Link href={item.vendorLink} legacyBehavior passHref>
                 {item.vendorLink}
               </Link>

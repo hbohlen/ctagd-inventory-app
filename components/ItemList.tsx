@@ -1,5 +1,5 @@
-import React from "react";
-import { Item as ItemType } from "@/types";
+import React from 'react';
+import { Item as ItemType } from '@/types';
 
 interface ItemListProps {
   items: ItemType[];
@@ -14,7 +14,7 @@ const ItemList: React.FC<ItemListProps> = ({ items }) => {
           <p>Quantity: {item.quantity}</p>
           {item.vendorLink && (
             <p>
-              Vendor:{" "}
+              Vendor:{' '}
               <a
                 href={item.vendorLink}
                 className="text-blue-500"

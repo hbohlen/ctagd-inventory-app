@@ -1,12 +1,12 @@
-import React from "react";
-import { Beverage as BeverageType } from "@/types";
-import { Beverage } from "@/components/Beverage";
-import Layout from "@/app/layout";
+import React from 'react';
+import { Beverage as BeverageType } from '@/types';
+import { Beverage } from '@/components/Beverage';
+import Layout from '@/app/layout';
 
 const mockBeverage: BeverageType = {
   id: 1,
-  name: "Orange Juice",
-  quantity: 25,
+  name: 'Orange Juice',
+  quantity: 25
 };
 
 const BeveragesPage: React.FC = () => {
