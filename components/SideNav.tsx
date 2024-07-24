@@ -9,7 +9,7 @@ export function SideNav() {
           <NavigationMenu.Link href="/" className="block p-2 rounded hover:bg-gray-700">Home</NavigationMenu.Link>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
-          <NavigationMenu.Link href="/about" className="block p-2 rounded hover:bg-gray-700">About</NavigationMenu.Link>
+          <NavigationMenu.Link href="/beverages" className="block p-2 rounded hover:bg-gray-700">Beverages</NavigationMenu.Link>
         </NavigationMenu.Item>
         {/* Add more navigation items as needed */}
       </NavigationMenu.List>
